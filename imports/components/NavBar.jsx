@@ -10,7 +10,7 @@ import BookList from '../ui/BookList';
 import SearchBar from 'material-ui-search-bar'
 import Document from '../components/Document';
 import UploadFile from '../ui/UploadFile';
-
+import Divider from './Divider';
  /// TODO: UPDATE ME !!!!!
 // *snip*
 // import SearchBar from 'react-search-bar';
@@ -70,9 +70,9 @@ class NavBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="absolute">
           <Tabs value={value} onChange={this.handleChange}>
-            <Tab label="Item One" />
-            <Tab label="Item Two" />
-            <Tab label="Item Three" href="#basic-tabs" />
+            <Tab label="Author - Upload Book" />
+            <Tab label="User - Purchase Book" />
+            <Tab label="User - My Bookshelf" href="#basic-tabs" />
             <ImagaAvatar/>
           </Tabs>
         </AppBar>
@@ -87,7 +87,7 @@ class NavBar extends React.Component {
         {value === 0 && <TabContainer><UploadFile/></TabContainer>}
         {value === 1 && <TabContainer>
           <BookList bookList={this.state.books}/></TabContainer>}
-        {value === 2 && <TabContainer><Document/></TabContainer>}
+        {value === 2 && <TabContainer><Divider /></TabContainer>}
       </div>
     );
   }

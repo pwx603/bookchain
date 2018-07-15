@@ -10,21 +10,39 @@ import BookIcon from '@material-ui/icons/LibraryBooks';
 import MyAccountIcon from '@material-ui/icons/AccountCircle';
 import FavouriteIcon from '@material-ui/icons/Favorite';
 import PeopleIcon from '@material-ui/icons/People';
+import Book from './Book';
+import Document from './Document';
+
+ /// TODO: UPDATE ME !!!!!
+// import samplePDF from '../../public/asset/test.pdf';
 
 const styles = theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: '500px',
     backgroundColor: theme.palette.background.paper,
   },
 });
 
+const bookProps = {
+  title: "The Hunger Games",
+  imagePath: "../asset/books/images/hunger.png",
+  description: "The book follows the story of a young female protagonist, Katniss Everdeen. She is born in a poor sector of her society and she voluntarily participates in a yearly battle royale between sectors of her society to protect her younger sister.",
+  price: 10,
+}
+
 function InsetDividers(props) {
   const { classes } = props;
+  let bookSelect = false;
+  // const renderDoc = () => {
+  //   return (
+      
+  //   )
+  // }
   return (
-    <div className={classes.root}>
-      <List>
-        <ListItem>
+    <div className={classes.root} style={{display: 'inline-flex'}}>
+      <List style={{display: 'inline-block'}}>
+        <ListItem style={{width: '300px'}}>
           <Avatar>
             <BookIcon />
           </Avatar>
@@ -54,6 +72,8 @@ function InsetDividers(props) {
           <ListItemText primary="Transfer" secondary="Sell my books" />
         </ListItem>
       </List>
+      <Book book={bookProps} onClick={console.log('clicked')}/>
+      {bookSelect && <Document style={{display: 'inline-flex'}}/>}
     </div>
   );
 }

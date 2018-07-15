@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import samplePDF from '../asset/test.pdf';
 import { Document, Page } from 'react-pdf';
 import Button from '@material-ui/core/Button';
 class PDFDocument extends Component {
@@ -30,7 +29,7 @@ class PDFDocument extends Component {
     return (
       <div>
         <Document
-          file="../asset/test.pdf"
+          file="http://www2.sdfi.edu.cn/netclass/jiaoan/englit/download/Harry%20Potter%20and%20the%20Sorcerer's%20Stone.pdf"
           onLoadSuccess={this.onDocumentLoadSuccess}
         >
           <Page pageNumber={pageNumber} />
