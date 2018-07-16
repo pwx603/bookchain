@@ -30,11 +30,16 @@ const styles = theme => ({
   },
 });
 
-class TextFields extends React.Component {
+class Form extends React.Component {
   state = {
-    name: 'Cat in the Hat',
+    name: '',
+    author: '',
+    isbn: '',
     price: '',
     contractAdr: '',
+    usedPrice: '',
+    authorCut: '',
+    description: '',
   };
 
   handleChange = name => event => {
@@ -44,15 +49,8 @@ class TextFields extends React.Component {
   };
 
   onSubmit = async () => {
-    await Booklist.insert({
-      name: this.state.name,
-      price: this.state.price,
-      contractAdr: this.state.contractAdr,
-      createdAt: new Date(), // current time
-    });
-    console.log(this.state)
-
     this.props.booklist.map((book) => {
+      console.log("hello")
       console.log(book);
     })
 
@@ -60,15 +58,24 @@ class TextFields extends React.Component {
 
     web3.eth.defaultAccount = accounts[0];
 
-    var name = "Harry Potter"
-    var symbol = "123";
-    var author = "JK";
+    var name = this.state.name;
+    var symbol = this.state.isbn;
+    var author = this.state.author;
     var bookipfs = this.props.state.bookipfs;
     var keyipfs = this.props.state.keyipfs;
-    var iv = window.crypto.getRandomValues(new Uint8Array(12));
-    var price = 2000;
-    var usedPrice = 1000;
-    var authorCut = 200;
+    var iv = this.props.state.iv;
+    var price = this.state.price;
+    var usedPrice = this.state.usedPrice;
+    var authorCut = this.state.authorCut;
+
+    console.log(name, symbol,
+      author,
+      bookipfs,
+      keyipfs,
+      iv,
+      price,
+      usedPrice,
+      authorCut)
 
 
     try{
@@ -82,7 +89,20 @@ class TextFields extends React.Component {
       usedPrice,
       authorCut]}).send({from: accounts[0]});
 
-      console.log(result.options.address);
+      await this.setState({
+        contractAdr: result.options.address
+      })
+
+      await Booklist.insert({
+        title: this.state.name,
+        price: this.state.price,
+        contractAdr: this.state.contractAdr,
+        createdAt: new Date(), // current time
+        description: "machohack is awesome",
+        imagePath: "asset/books/images/hunger.png"
+      });
+      console.log(result.options.address)
+
 
     }catch(err){
       console.log(result);
@@ -94,26 +114,70 @@ class TextFields extends React.Component {
 
     return (
       <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          id="author"
-          label="Author"
+          <TextField
+          required
+          id="title"
+          label="Book Title"
           className={classes.textField}
           value={this.state.name}
           onChange={this.handleChange('name')}
           margin="normal"
         />
         <TextField
+        required
+          id="author"
+          label="Author"
+          className={classes.textField}
+          value={this.state.author}
+          onChange={this.handleChange('author')}
+          margin="normal"
+        />
+        <TextField
+        required
           id="isbn"
           label="ISBN"
+          value={this.state.isbn}
+          onChange={this.handleChange('isbn')}
           className={classes.textField}
           margin="normal"
         />
 
+
         <TextField
+        required
           id="price"
-          label="Original Price"
-          value={this.state.age}
-          onChange={this.handleChange('age')}
+          label="Price"
+          value={this.state.price}
+          onChange={this.handleChange('price')}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+
+                <TextField
+        required
+          id="usedPrice"
+          label="Used Book Price"
+          value={this.state.usedPrice}
+          onChange={this.handleChange('usedPrice')}
+          type="number"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+
+
+                <TextField
+        required
+          id="authorCut"
+          label="Author Cut"
+          value={this.state.authorCut}
+          onChange={this.handleChange('authorCut')}
           type="number"
           className={classes.textField}
           InputLabelProps={{
@@ -124,22 +188,14 @@ class TextFields extends React.Component {
 
 
         <TextField
-          required
-          id="required"
-          label="Required"
-          defaultValue="Hello World"
-          className={classes.textField}
-          margin="normal"
-        />
-
-        <TextField
+        disabled
           id="contractAdr"
           label="Contract Address"
           InputLabelProps={{
             shrink: true,
           }}
+          value={this.state.contractAdr}
           onChange={this.handleChange('contractAdr')}
-          helperText="Full width!"
           fullWidth
           margin="normal"
         />
@@ -152,9 +208,6 @@ class TextFields extends React.Component {
   }
 }
 
-TextFields.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 // export default withStyles(styles)(TextFields);
 
@@ -162,4 +215,4 @@ export default withTracker(() => {
   return {
     booklist: Booklist.find({}).fetch(),
   };
-})(withStyles(styles)(TextFields));
+})(withStyles(styles)(Form));

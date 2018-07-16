@@ -33,6 +33,7 @@ class UploadFile extends React.Component {
     buffer: null,
     encryptedBuffer: null,
     keyipfs: null,
+    iv: null,
 
   };
 
@@ -74,6 +75,7 @@ class UploadFile extends React.Component {
   encrypt = async () => {
     await this.generateCipher();
     await this.encryptData();
+    await this.onTransfer();
   }
 
   generateCipher = async () => {
@@ -131,6 +133,9 @@ class UploadFile extends React.Component {
 
   encryptData = async () => {
     const iv = window.crypto.getRandomValues(new Uint8Array(12))
+    await this.setState({
+      iv
+    })
     console.log(iv);
 
     try {
@@ -180,10 +185,6 @@ class UploadFile extends React.Component {
           <p>Try dropping some files here, or click to select files to upload.</p>
         </Dropzone>
         <Button variant="contained" size="large" color="primary" onClick={this.encrypt}>
-          Encrypt
-        <Icon>send</Icon>
-        </Button>
-        <Button variant="contained" size="large" color="primary" onClick={this.onTransfer}>
           IPFS
         <Icon>send</Icon>
         </Button>
